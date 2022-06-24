@@ -2,6 +2,8 @@ FROM ubuntu
 
 RUN apt-get update
 RUN apt-get -y install python3-pip unzip xvfb libxi6 libgconf-2-4 wget
+RUN apt-get -y install libnss3
+RUN apt-get -y install libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev
 RUN pip3 install flask
 RUN pip3 install splinter
 
