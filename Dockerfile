@@ -1,10 +1,10 @@
 FROM ubuntu
 
 RUN apt-get update
-RUN apt-get -y install python3-pip unzip xvfb libxi6 libgconf-2-4 wget firefox
+RUN apt-get -y install python3-pip unzip xvfb libxi6 libgconf-2-4 wget firefox imagemagick
 
 RUN python3 -m pip install --upgrade pip
-RUN pip3 install flask selenium requests
+RUN pip3 install flask selenium requests wand
 
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz
 RUN tar -xvzf geckodriver*
