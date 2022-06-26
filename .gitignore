@@ -5,3 +5,4 @@
 **/*.html
 **/*.pdf
 tmp
+**/__pycache__
