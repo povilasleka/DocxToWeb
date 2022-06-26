@@ -11,18 +11,18 @@ class ConvertService:
 
         options = Options()
         options.headless = True
-        self.driver = webdriver.Firefox(options=options)
+        self.driver = webdriver.Firefox(options = options)
      
     def run(self):
         self.driver.get('https://www.onlineconverter.com/pdf-to-html')
         self.driver.find_element(By.XPATH, '//input[@id="file"]').send_keys(self.pdf_input_path)
         self.driver.find_element(By.XPATH, '//input[@id="convert-button"]').click()
 
-        for attempt in range(10):
+        for attempt in range(15):
             try:
                 download_url = self.driver.find_element(By.XPATH, '//a[.="Download Now"]').get_attribute('href')
             except:
-                time.sleep(3)
+                time.sleep(2)
                 continue
             else:
                 break
