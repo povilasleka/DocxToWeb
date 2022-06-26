@@ -25,7 +25,7 @@ class ConvertService:
         
         res = requests.get(download_url)
 
-        with open('download.zip', 'wb') as f:
+        with open(self.html_output_path, 'wb') as f:
             f.write(res.content)
         
         return True

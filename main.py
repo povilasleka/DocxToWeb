@@ -1,12 +1,21 @@
-from flask import Flask
+from flask import Flask, request
 from services.convert_service import ConvertService
+import base64
+import json
+import os
 
 app = Flask(__name__)
+app.debug = True
 
-@app.route('/convert', methods=["GET"])
+@app.route('/convert', methods=["POST"])
 def convert():
-    args = request.args
-    ConvertService(args.get("input_path"), args.get("output_path")).run()
+    file_base64 = request.get_json()["file"]
+
+    with open('input.pdf', 'wb') as f:
+        f.write(base64.b64decode(file_base64))
+
+    ConvertService(f"{os.getcwd()}/input.pdf", "download.zip").run()
+
     return 'done!'
 
 if __name__ == '__main__':
