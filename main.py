@@ -17,7 +17,7 @@ if not os.path.isdir('tmp'):
         print(error)
 
 
-@app.route('/conavert', methods=["POST"])
+@app.route('/convert', methods=["POST"])
 def convert():
     # get file in base64
     file_base64 = request.get_json()["file"]
@@ -33,19 +33,24 @@ def convert():
     with ZipFile("./tmp/download.zip", 'r') as zip_ref:
         zip_ref.extractall("./tmp/download")
 
+    images_folder = f"{os.getcwd()}/tmp/download/images"
     # resize images
-    for path in glob(f"{os.getcwd()}/tmp/download/images/*.*"):
+    for path in glob(f"{images_folder}/*.*"):
         ImageService(path).resize(1200)
+
+    ImageService(f"{images_folder}/000000.jpg").copy_and_resize(f"{images_folder}/thumbnail.jpg", 600)
 
     remove_tmp_files()
 
     return 'done!'
+
 
 @app.route('/health', methods=["GET"])
 def health():
     return jsonify({
         "status": "up"
     })
+
 
 def remove_tmp_files():
     if os.path.isfile('./tmp/download.zip'):
