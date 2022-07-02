@@ -2,7 +2,7 @@ from flask import Flask, request
 from services.convert_service import ConvertService
 from services.image_service import ImageService
 import base64
-import json
+from flask import jsonify
 import os
 from zipfile import ZipFile
 from glob import glob
@@ -16,7 +16,8 @@ if not os.path.isdir('tmp'):
     except OSError as error:
         print(error)
 
-@app.route('/convert', methods=["POST"])
+
+@app.route('/conavert', methods=["POST"])
 def convert():
     # get file in base64
     file_base64 = request.get_json()["file"]
@@ -40,6 +41,12 @@ def convert():
 
     return 'done!'
 
+@app.route('/health', methods=["GET"])
+def health():
+    return jsonify({
+        "status": "up"
+    })
+
 def remove_tmp_files():
     if os.path.isfile('./tmp/download.zip'):
         os.remove('./tmp/download.zip')
@@ -47,5 +54,6 @@ def remove_tmp_files():
     if os.path.isfile('./tmp/input.pdf'):
         os.remove('./tmp/input.pdf')
 
+
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = '8080')
+    app.run(host='0.0.0.0', port='8080')
