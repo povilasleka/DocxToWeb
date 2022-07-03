@@ -29,10 +29,6 @@ def convert():
     # convert pdf to html and images
     ConvertService(f"{os.getcwd()}/tmp/input.pdf", "./tmp/download.zip").run()
 
-    # unzip html source
-    with ZipFile("./tmp/download.zip", 'r') as zip_ref:
-        zip_ref.extractall("./tmp/download")
-
     images_folder = f"{os.getcwd()}/tmp/download/images"
     # resize images
     for path in glob(f"{images_folder}/*.*"):

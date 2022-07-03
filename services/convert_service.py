@@ -1,6 +1,10 @@
+from zipfile import ZipFile
+import zipfile
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+from lxml import html
 import requests
 import time
 
@@ -33,4 +37,21 @@ class ConvertService:
         with open(self.html_output_path, 'wb') as f:
             f.write(res.content)
 
-        return True
+        with ZipFile("./tmp/download.zip", 'r') as zip_ref:
+            zip_ref.extractall("./tmp/download")
+
+        self.__transform()
+
+    @staticmethod
+    def __transform():
+        with open("./tmp/download/index.html", "r") as fr:
+            tree = html.fromstring(fr.read())
+
+            # for empty_p in tree.xpath('//p[not(text())]'):
+            #     empty_p.getparent().remove(empty_p)
+
+            for p in tree.xpath('//*[@class]'):
+                p.attrib.pop('class')
+
+            with open("./tmp/download/index.html", "wb") as fw:
+                fw.write(html.tostring(tree))
