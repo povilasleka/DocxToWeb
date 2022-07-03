@@ -47,11 +47,11 @@ class ConvertService:
         with open("./tmp/download/index.html", "r") as fr:
             tree = html.fromstring(fr.read())
 
-            # for empty_p in tree.xpath('//p[not(text())]'):
-            #     empty_p.getparent().remove(empty_p)
-
             for p in tree.xpath('//*[@class]'):
                 p.attrib.pop('class')
 
+            for a in tree.xpath('//a'):
+                a.attrib['target'] = '_blank'
+
             with open("./tmp/download/index.html", "wb") as fw:
-                fw.write(html.tostring(tree))
+                fw.write(html.tostring(tree.xpath('//body')[0]))
